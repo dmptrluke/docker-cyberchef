@@ -1,9 +1,9 @@
 FROM node:10
+ENV NODE_OPTIONS=--max_old_space_size=2048
 
 WORKDIR /code
 RUN npm install -g grunt-cli
-RUN git clone https://github.com/gchq/CyberChef.git .
-ENV NODE_OPTIONS=--max_old_space_size=2048
+RUN git clone -b master --depth=1 https://github.com/gchq/CyberChef.git .
 RUN npm install
 RUN grunt prod
 
