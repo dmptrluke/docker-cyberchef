@@ -8,5 +8,5 @@ RUN npm install --unsafe-perm
 RUN grunt prod
 
 FROM nginx:latest 
-LABEL version=v9.27.1
+LABEL version=v9.27.2
 COPY --from=0 /code/build/prod /usr/share/nginx/html
