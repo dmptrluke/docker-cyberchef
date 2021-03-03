@@ -2,11 +2,8 @@ name: Docker Build
 
 on:
   push:
-    branches:
-      - '**'
-    tags:
-      - 'v*'
-  pull_request:
+  schedule:
+    - cron: "0 0 * * *"
 
 jobs:
   build:
@@ -15,18 +12,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v2
 
-      - name: Docker Metadata
-        id: docker_meta
-        uses: crazy-max/ghaction-docker-meta@v1
-        with:
-          images: |
-            dmptrluke/cyberchef
+      - name: Get Latest CyberChef Version
+        run: curl -s https://api.github.com/repos/gchq/CyberChef/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/VERSION=\1/' >> $GITHUB_ENV
 
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
       - name: Login to DockerHub
-        if: github.event_name != 'pull_request'
         uses: docker/login-action@v1 
         with:
           username: ${{ secrets.DOCKERHUB_USERNAME }}
@@ -35,9 +27,6 @@ jobs:
       - name: Build and push
         uses: docker/build-push-action@v2
         with:
-          push: ${{ github.event_name != 'pull_request' }}
-          tags: ${{ steps.docker_meta.outputs.tags }}
-          labels: ${{ steps.docker_meta.outputs.labels }}
-          cache-from: type=registry,ref=dmptrluke/cyberchef:latest
-          cache-to: type=inline
-  
+          push: true
+          build-args: VERSION=${{ env.VERSION }}
+          tags: dmptrluke/cyberchef:${VERSION}
