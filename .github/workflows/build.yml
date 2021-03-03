@@ -15,6 +15,9 @@ jobs:
       - name: Get Latest CyberChef Version
         run: curl -s https://api.github.com/repos/gchq/CyberChef/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/VERSION=\1/' >> $GITHUB_ENV
 
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v1
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v1
 
@@ -28,5 +31,8 @@ jobs:
         uses: docker/build-push-action@v2
         with:
           push: true
+          platforms: linux/amd64,linux/arm64,linux/arm/v7
           build-args: VERSION=${{ env.VERSION }}
-          tags: dmptrluke/cyberchef:${{ env.VERSION }}
+          tags: |
+            dmptrluke/cyberchef:latest
+            dmptrluke/cyberchef:${{ env.VERSION }}
