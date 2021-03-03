@@ -29,4 +29,4 @@ jobs:
         with:
           push: true
           build-args: VERSION=${{ env.VERSION }}
-          tags: dmptrluke/cyberchef:${VERSION}
+          tags: dmptrluke/cyberchef:${{ env.VERSION }}
