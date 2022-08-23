@@ -1,4 +1,4 @@
-FROM --platform=$BUILDPLATFORM node:10 as build
+FROM --platform=$BUILDPLATFORM node:17 as build
 ARG VERSION
 
 WORKDIR /code
