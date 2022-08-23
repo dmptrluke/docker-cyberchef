@@ -16,10 +16,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set up Python
-        uses: actions/setup-python@v4
-        with:
-          python-version: '3.10' 
 
       - name: Get Latest CyberChef Version
         run: curl -s https://api.github.com/repos/gchq/CyberChef/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/VERSION=\1/' >> $GITHUB_ENV
