@@ -8,5 +8,5 @@ RUN npm install --unsafe-perm
 RUN npm run setheapsize
 RUN grunt prod
 
-FROM nginx:latest-alpine
+FROM nginx:mainline-alpine
 COPY --from=build /code/build/prod /usr/share/nginx/html
